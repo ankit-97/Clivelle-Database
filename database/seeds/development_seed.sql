@@ -50,16 +50,26 @@ WHEN NOT MATCHED THEN INSERT(category_id, sku, slug, name, description, colour, 
 
 MERGE dbo.ProductImages AS target
 USING (
-  SELECT p.product_id, p.name
+  SELECT p.product_id, p.name, v.image_path
   FROM dbo.Products p
+  INNER JOIN (VALUES
+    ('rosewood-claw', 'rosewood-claw.svg'),
+    ('mauve-claw', 'mauve-claw.svg'),
+    ('marigold-barrette', 'marigold-barrette.svg'),
+    ('pearl-headband', 'pearl-headband.svg'),
+    ('petal-clip', 'petal-clip.svg'),
+    ('ribbon-scrunchie', 'ribbon-scrunchie.svg'),
+    ('cloud-scrunchie', 'cloud-scrunchie.svg'),
+    ('sunday-headband', 'sunday-headband.svg')
+  ) AS v(slug, image_path) ON v.slug = p.slug
   WHERE p.product_status = 'active'
 ) AS source
 ON target.product_id = source.product_id AND target.is_primary = 1
 WHEN MATCHED THEN UPDATE SET
-  image_url = 'http://127.0.0.1:4173/clivelle-photo-grid.svg',
+  image_url = 'http://127.0.0.1:4173/' + source.image_path,
   alt_text = source.name, display_order = 0
 WHEN NOT MATCHED THEN INSERT(product_id, image_url, alt_text, display_order, is_primary)
-  VALUES(source.product_id, 'http://127.0.0.1:4173/clivelle-photo-grid.svg', source.name, 0, 1);
+  VALUES(source.product_id, 'http://127.0.0.1:4173/' + source.image_path, source.name, 0, 1);
 
 MERGE dbo.Inventory AS target
 USING (SELECT product_id FROM dbo.Products WHERE product_status = 'active') AS source
