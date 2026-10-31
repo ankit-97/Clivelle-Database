@@ -66,10 +66,10 @@ USING (
 ) AS source
 ON target.product_id = source.product_id AND target.is_primary = 1
 WHEN MATCHED THEN UPDATE SET
-  image_url = 'http://127.0.0.1:4173/' + source.image_path,
+  image_url = '/' + source.image_path,
   alt_text = source.name, display_order = 0
 WHEN NOT MATCHED THEN INSERT(product_id, image_url, alt_text, display_order, is_primary)
-  VALUES(source.product_id, 'http://127.0.0.1:4173/' + source.image_path, source.name, 0, 1);
+  VALUES(source.product_id, '/' + source.image_path, source.name, 0, 1);
 
 MERGE dbo.Inventory AS target
 USING (SELECT product_id FROM dbo.Products WHERE product_status = 'active') AS source
