@@ -53,14 +53,14 @@ USING (
   SELECT p.product_id, p.name, v.image_path
   FROM dbo.Products p
   INNER JOIN (VALUES
-    ('rosewood-claw', 'rosewood-claw.svg'),
-    ('mauve-claw', 'mauve-claw.svg'),
-    ('marigold-barrette', 'marigold-barrette.svg'),
-    ('pearl-headband', 'pearl-headband.svg'),
-    ('petal-clip', 'petal-clip.svg'),
-    ('ribbon-scrunchie', 'ribbon-scrunchie.svg'),
-    ('cloud-scrunchie', 'cloud-scrunchie.svg'),
-    ('sunday-headband', 'sunday-headband.svg')
+    ('rosewood-claw', 'rosewood-claw.jpg'),
+    ('mauve-claw', 'mauve-claw.jpg'),
+    ('marigold-barrette', 'marigold-barrette.jpg'),
+    ('pearl-headband', 'pearl-headband.jpg'),
+    ('petal-clip', 'petal-clip.jpg'),
+    ('ribbon-scrunchie', 'ribbon-scrunchie.jpg'),
+    ('cloud-scrunchie', 'cloud-scrunchie.jpg'),
+    ('sunday-headband', 'sunday-headband.jpg')
   ) AS v(slug, image_path) ON v.slug = p.slug
   WHERE p.product_status = 'active'
 ) AS source
